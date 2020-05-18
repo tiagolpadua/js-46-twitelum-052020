@@ -11,8 +11,19 @@ class App extends Component {
     super();
     this.state = {
       novoTweet: "",
+      tweets: [],
     };
   }
+
+  adicionaTweet = (infosDoEvento) => {
+    infosDoEvento.preventDefault();
+    if (this.state.novoTweet.length > 0) {
+      this.setState({
+        tweets: [this.state.novoTweet, ...this.state.tweets],
+        novoTweet: "",
+      });
+    }
+  };
 
   render() {
     return (
@@ -23,7 +34,7 @@ class App extends Component {
         <div className="container">
           <Dashboard>
             <Widget>
-              <form className="novoTweet">
+              <form className="novoTweet" onSubmit={this.adicionaTweet}>
                 <div className="novoTweet__editorArea">
                   <span
                     className={`novoTweet__status
@@ -60,7 +71,13 @@ ${this.state.novoTweet.length > 140 ? "novoTweet__status--invalido" : ""}
           <Dashboard posicao="centro">
             <Widget>
               <div className="tweetsArea">
-                <Tweet />
+                {this.state.tweets.length > 0
+                  ? this.state.tweets.map((tweetInfo, index) => {
+                      return (
+                        <Tweet key={tweetInfo + index} texto={tweetInfo} />
+                      );
+                    })
+                  : "Crie  um Tweet!"}
               </div>
             </Widget>
           </Dashboard>
