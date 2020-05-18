@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
-import Cabecalho from "./components/Cabecalho";
-import NavMenu from "./components/NavMenu";
-import Dashboard from "./components/Dashboard";
-import Widget from "./components/Widget";
-import TrendsArea from "./components/TrendsArea";
-import Tweet from "./components/Tweet";
+import Cabecalho from "../../components/Cabecalho";
+import NavMenu from "../../components/NavMenu";
+import Dashboard from "../../components/Dashboard";
+import Widget from "../../components/Widget";
+import TrendsArea from "../../components/TrendsArea";
+import Tweet from "../../components/Tweet";
 
-class App extends Component {
+class Home extends Component {
   constructor() {
     super();
     this.state = {
@@ -87,4 +87,4 @@ ${this.state.novoTweet.length > 140 ? "novoTweet__status--invalido" : ""}
   }
 }
 
-export default App;
+export default Home;
