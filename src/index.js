@@ -11,11 +11,14 @@ import "./assets/css/novoTweet.css";
 import "./assets/css/reset.css";
 import Roteamento from "./routes";
 import * as serviceWorker from "./serviceWorker";
+import { NotificacaoContextProvider } from "./contexts/NotificacaoContext";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Roteamento />
-  </BrowserRouter>,
+  <NotificacaoContextProvider>
+    <BrowserRouter>
+      <Roteamento />
+    </BrowserRouter>
+  </NotificacaoContextProvider>,
   document.getElementById("root")
 );
 
