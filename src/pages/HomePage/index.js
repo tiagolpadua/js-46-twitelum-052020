@@ -6,7 +6,7 @@ import Widget from "../../components/Widget";
 import TrendsArea from "../../components/TrendsArea";
 import Tweet from "../../components/Tweet";
 
-class Home extends Component {
+class HomePage extends Component {
   constructor() {
     super();
     this.state = {
@@ -87,4 +87,4 @@ ${this.state.novoTweet.length > 140 ? "novoTweet__status--invalido" : ""}
   }
 }
 
-export default Home;
+export default HomePage;
