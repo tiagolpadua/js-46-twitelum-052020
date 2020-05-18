@@ -6,21 +6,58 @@ import { NotificacaoContext } from "../../contexts/NotificacaoContext";
 import "./loginPage.css";
 import { LoginService } from "../../services/LoginService";
 
+const InputFormField = ({ id, label, errors, values, onChange, type }) => {
+  return (
+    <div className="loginPage__inputWrap">
+      <label className="loginPage__label" htmlFor={id}>
+        {label}
+      </label>
+      <input
+        className="loginPage__input"
+        type={type || "text"}
+        id={id}
+        name={id}
+        value={values[id]}
+        onChange={onChange}
+      />
+      <p style={{ color: "red" }}>{errors[id] && errors[id]}</p>
+    </div>
+  );
+};
+
 class LoginPage extends Component {
   static contextType = NotificacaoContext;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      msgErro: "",
-    };
-  }
+  state = {
+    values: {
+      inputLogin: "",
+      inputSenha: "",
+    },
+    errors: {},
+  };
+
+  formValidations = () => {
+    const { inputLogin, inputSenha } = this.state.values;
+    const errors = {};
+    if (!inputLogin) errors.inputLogin = "Esse campo é obrigatório";
+    if (!inputSenha) errors.inputSenha = "Esse campo é obrigatório";
+    this.setState({ errors });
+  };
+
+  onFormFieldChange = ({ target }) => {
+    const value = target.value;
+    const name = target.name;
+    const values = { ...this.state.values, [name]: value };
+    this.setState({ values }, () => {
+      this.formValidations();
+    });
+  };
 
   fazerLogin = (infosDoEvento) => {
     infosDoEvento.preventDefault();
     const dadosDeLogin = {
-      login: this.refs.inputLogin.value,
-      senha: this.refs.inputSenha.value,
+      login: this.state.values.inputLogin,
+      senha: this.state.values.inputSenha,
     };
     LoginService.logar(dadosDeLogin)
       .then(() => {
@@ -47,27 +84,22 @@ class LoginPage extends Component {
                 onSubmit={this.fazerLogin}
               >
                 <div className="loginPage__inputWrap">
-                  <label className="loginPage__label" htmlFor="login">
-                    Login
-                  </label>
-                  <input
-                    ref="inputLogin"
-                    className="loginPage__input"
-                    type="text"
-                    id="login"
-                    name="login"
+                  <InputFormField
+                    id="inputLogin"
+                    label="Login: "
+                    onChange={this.onFormFieldChange}
+                    values={this.state.values}
+                    errors={this.state.errors}
                   />
                 </div>
                 <div className="loginPage__inputWrap">
-                  <label className="loginPage__label" htmlFor="senha">
-                    Senha
-                  </label>
-                  <input
-                    ref="inputSenha"
-                    className="loginPage__input"
+                  <InputFormField
+                    id="inputSenha"
+                    label="Senha: "
+                    onChange={this.onFormFieldChange}
+                    values={this.state.values}
+                    errors={this.state.errors}
                     type="password"
-                    id="senha"
-                    name="senha"
                   />
                 </div>
                 {this.state.msgErro ? (
