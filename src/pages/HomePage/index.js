@@ -106,11 +106,14 @@ ${this.state.novoTweet.length > 140 ? "novoTweet__status--invalido" : ""}
           <Dashboard posicao="centro">
             <Widget>
               <div className="tweetsArea">
-                {this.state.tweets.map((tweetInfo, index) => (
+                {this.state.tweets.map((tweetInfo) => (
                   <Tweet
                     key={tweetInfo._id}
+                    id={tweetInfo._id}
                     texto={tweetInfo.conteudo}
                     usuario={tweetInfo.usuario}
+                    likeado={tweetInfo.likeado}
+                    totalLikes={tweetInfo.totalLikes}
                   />
                 ))}
               </div>
