@@ -47,17 +47,11 @@ class HomePage extends Component {
   }
 
   removeTweet(idTweetQueVaiSerRemovido) {
-    console.log(idTweetQueVaiSerRemovido);
-    TweetsService.remove(idTweetQueVaiSerRemovido).then((response) => {
-      console.log(response);
-      const listaDeTweetsAtualizada = this.state.tweets.filter(
-        (tweet) => tweet._id !== idTweetQueVaiSerRemovido
-      );
-      this.setState({
-        tweets: listaDeTweetsAtualizada,
-        tweetAtivoNoModal: {},
+    this.context.store
+      .dispatch(TweetsThunkActions.remove(idTweetQueVaiSerRemovido))
+      .then(() => {
+        this.fechaModal();
       });
-    });
   }
 
   adicionaTweet = (infosDoEvento) => {
