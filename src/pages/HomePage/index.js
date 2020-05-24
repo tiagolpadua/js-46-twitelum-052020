@@ -7,6 +7,7 @@ import Widget from "../../components/Widget";
 import TrendsArea from "../../components/TrendsArea";
 import Tweet from "../../components/Tweet";
 import { Modal } from "../../components/Modal";
+import { TweetsService } from "../../services/TweetsService";
 
 class HomePage extends Component {
   constructor() {
@@ -38,64 +39,37 @@ class HomePage extends Component {
       });
     });
 
-    fetch(
-      `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem(
-        "TOKEN"
-      )}`
-    )
-      .then((response) => response.json())
-      .then((tweets) => {
-        window.store.dispatch({ type: "CARREGA_TWEETS", tweets });
-      });
+    TweetsService.carrega().then((tweets) => {
+      window.store.dispatch({ type: "CARREGA_TWEETS", tweets });
+    });
   }
 
   removeTweet(idTweetQueVaiSerRemovido) {
     console.log(idTweetQueVaiSerRemovido);
-    fetch(
-      `https://twitelum-api.herokuapp.com/tweets/${idTweetQueVaiSerRemovido}?X-AUTH-TOKEN=${localStorage.getItem(
-        "TOKEN"
-      )}`,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((data) => data.json())
-      .then((response) => {
-        console.log(response);
-        const listaDeTweetsAtualizada = this.state.tweets.filter(
-          (tweet) => tweet._id !== idTweetQueVaiSerRemovido
-        );
-        this.setState({
-          tweets: listaDeTweetsAtualizada,
-          tweetAtivoNoModal: {},
-        });
+    TweetsService.remove(idTweetQueVaiSerRemovido).then((response) => {
+      console.log(response);
+      const listaDeTweetsAtualizada = this.state.tweets.filter(
+        (tweet) => tweet._id !== idTweetQueVaiSerRemovido
+      );
+      this.setState({
+        tweets: listaDeTweetsAtualizada,
+        tweetAtivoNoModal: {},
       });
+    });
   }
 
   adicionaTweet = (infosDoEvento) => {
     infosDoEvento.preventDefault();
     if (this.state.novoTweet.length > 0) {
-      fetch(
-        `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem(
-          "TOKEN"
-        )}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({ conteudo: this.state.novoTweet }),
-        }
-      )
-        .then((respostaDoServer) => {
-          return respostaDoServer.json();
-        })
-        .then((tweetVindoDoServidor) => {
+      TweetsService.adiciona(this.state.novoTweet).then(
+        (tweetVindoDoServidor) => {
+          this.setState({ novoTweet: "" });
           console.log(tweetVindoDoServidor);
           this.setState({
             tweets: [tweetVindoDoServidor, ...this.state.tweets],
           });
-        });
+        }
+      );
     }
   };
 
