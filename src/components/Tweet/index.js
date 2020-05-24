@@ -10,6 +10,8 @@ class Tweet extends Component {
       totalLikes: props.totalLikes,
     };
   }
+  handleClickNaAreaDeConteudo = () =>
+    this.props.onClickNaAreaDeConteudo && this.props.onClickNaAreaDeConteudo();
 
   likeHandler = () => {
     const { likeado, totalLikes } = this.state;
@@ -42,7 +44,12 @@ class Tweet extends Component {
             <span className="tweet__userName">@{this.props.usuario.login}</span>
           </a>
         </div>
-        <p className="tweet__conteudo">{this.props.texto}</p>
+        <p
+          className="tweet__conteudo"
+          onClick={this.handleClickNaAreaDeConteudo}
+        >
+          {this.props.texto}
+        </p>
         <footer className="tweet__footer">
           <button className="btnLike btn btn--clean" onClick={this.likeHandler}>
             <svg
@@ -71,6 +78,13 @@ class Tweet extends Component {
               X
             </button>
           )}
+          {this.props.likes && (
+            <ul>
+              {this.props.likes.map(({ usuario }) => (
+                <li key={usuario.login}>{usuario.login}</li>
+              ))}
+            </ul>
+          )}
         </footer>
       </article>
     );
@@ -94,6 +108,7 @@ Tweet.propTypes = {
   }),
   texto: PropTypes.string.isRequired,
   onRemove: PropTypes.func,
+  onClickNaAreaDeConteudo: PropTypes.func,
 };
 
 export default Tweet;
