@@ -63,15 +63,12 @@ class HomePage extends Component {
   adicionaTweet = (infosDoEvento) => {
     infosDoEvento.preventDefault();
     if (this.state.novoTweet.length > 0) {
-      TweetsService.adiciona(this.state.novoTweet).then(
-        (tweetVindoDoServidor) => {
+      const conteudoDoTweet = this.state.novoTweet;
+      this.context.store
+        .dispatch(TweetsThunkActions.addTweet(conteudoDoTweet))
+        .then(() => {
           this.setState({ novoTweet: "" });
-          console.log(tweetVindoDoServidor);
-          this.setState({
-            tweets: [tweetVindoDoServidor, ...this.state.tweets],
-          });
-        }
-      );
+        });
     }
   };
 

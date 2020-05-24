@@ -15,6 +15,12 @@ export const TweetsThunkActions = {
         });
     };
   },
+  addTweet: (conteudo) => {
+    return async (dispatch) => {
+      const response = await TweetsService.adiciona(conteudo);
+      dispatch({ type: "tweets/ADD", payload: { tweet: response } });
+    };
+  },
 };
 const INITIAL_STATE = {
   data: [],
@@ -40,6 +46,13 @@ export function tweetsReducer(state = INITIAL_STATE, action = {}) {
     return {
       ...state,
       data: [],
+      error: true,
+    };
+  }
+  if (action.type === "tweets/ADD") {
+    return {
+      ...state,
+      data: [action.payload.tweet, ...state.data],
       error: true,
     };
   }
