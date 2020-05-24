@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Helmet } from "react-helmet";
 import Cabecalho from "../../components/Cabecalho";
 import NavMenu from "../../components/NavMenu";
 import Dashboard from "../../components/Dashboard";
@@ -59,6 +60,9 @@ class HomePage extends Component {
   render() {
     return (
       <Fragment>
+        <Helmet>
+          <title>Twitelum - ({`${this.state.tweets.length}`})</title>
+        </Helmet>
         <Cabecalho>
           <NavMenu usuario="@omariosouto" />
         </Cabecalho>
