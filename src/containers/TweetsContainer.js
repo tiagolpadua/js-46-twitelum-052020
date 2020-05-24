@@ -18,6 +18,7 @@ export class TweetsContainer extends Component {
     store.subscribe(() => {
       this.setState({
         tweets: store.getState().tweets.data,
+        tweetAtivoNoModal: store.getState().tweets.activeDataItem,
       });
     });
     store.dispatch(TweetsThunkActions.carregaTweets());
@@ -31,17 +32,14 @@ export class TweetsContainer extends Component {
       });
   }
 
-  fechaModal = () => this.setState({ tweetAtivoNoModal: {} });
+  fechaModal = () => {
+    const store = this.context.store;
+    store.dispatch(TweetsThunkActions.unsetTweetAtivo());
+  };
 
-  abreModal = (tweetQueVaiProModal) => {
-    this.setState(
-      {
-        tweetAtivoNoModal: tweetQueVaiProModal,
-      },
-      () => {
-        console.log(this.state.tweetAtivoNoModal);
-      }
-    );
+  abreModal = (idDoTweetQueVaiProModal) => {
+    const store = this.context.store;
+    store.dispatch(TweetsThunkActions.setTweetAtivo(idDoTweetQueVaiProModal));
   };
 
   render() {
@@ -61,7 +59,7 @@ export class TweetsContainer extends Component {
                 likeado={tweetInfo.likeado}
                 totalLikes={tweetInfo.totalLikes}
                 removivel={tweetInfo.removivel}
-                onClickNaAreaDeConteudo={() => this.abreModal(tweetInfo)}
+                onClickNaAreaDeConteudo={() => this.abreModal(tweetInfo._id)}
                 removeHandler={() => this.removeTweet(tweetInfo._id)}
               />
             );
