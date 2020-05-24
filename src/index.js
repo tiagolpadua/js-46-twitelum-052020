@@ -12,6 +12,7 @@ import "./assets/css/reset.css";
 import Roteamento from "./routes";
 import * as serviceWorker from "./serviceWorker";
 import { NotificacaoContextProvider } from "./contexts/NotificacaoContext";
+import "./store";
 
 ReactDOM.render(
   <NotificacaoContextProvider>
