@@ -9,6 +9,7 @@ import Tweet from "../../components/Tweet";
 import { Modal } from "../../components/Modal";
 import { TweetsService } from "../../services/TweetsService";
 import { ReactReduxContext } from "react-redux";
+import { TweetsThunkActions } from "../../store/ducks/tweets";
 
 class HomePage extends Component {
   static contextType = ReactReduxContext;
@@ -39,18 +40,10 @@ class HomePage extends Component {
     const store = this.context.store;
     store.subscribe(() => {
       this.setState({
-        tweets: store.getState(),
+        tweets: store.getState().tweets.data,
       });
     });
-    fetch(
-      `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem(
-        "TOKEN"
-      )}`
-    )
-      .then((response) => response.json())
-      .then((tweets) => {
-        store.dispatch({ type: "CARREGA_TWEETS", tweets });
-      });
+    store.dispatch(TweetsThunkActions.carregaTweets());
   }
 
   removeTweet(idTweetQueVaiSerRemovido) {
