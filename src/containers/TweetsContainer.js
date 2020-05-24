@@ -42,6 +42,10 @@ export class TweetsContainer extends Component {
     store.dispatch(TweetsThunkActions.setTweetAtivo(idDoTweetQueVaiProModal));
   };
 
+  likeHandler = (idDoTweet) => {
+    this.context.store.dispatch(TweetsThunkActions.like(idDoTweet));
+  };
+
   render() {
     return (
       <Fragment>
@@ -61,6 +65,7 @@ export class TweetsContainer extends Component {
                 removivel={tweetInfo.removivel}
                 onClickNaAreaDeConteudo={() => this.abreModal(tweetInfo._id)}
                 removeHandler={() => this.removeTweet(tweetInfo._id)}
+                likeHandler={() => this.likeHandler(tweetInfo._id)}
               />
             );
           })}
@@ -80,6 +85,9 @@ export class TweetsContainer extends Component {
                 this.removeTweet(this.state.tweetAtivoNoModal._id)
               }
               likeado={this.state.tweetAtivoNoModal.likeado}
+              likeHandler={() =>
+                this.likeHandler(this.state.tweetAtivoNoModal._id)
+              }
             />
           )}
         </Modal>
