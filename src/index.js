@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import "./assets/css/btn.css";
 import "./assets/css/container.css";
@@ -9,17 +10,19 @@ import "./assets/css/notificacao.css";
 import "./assets/css/novoTweet.css";
 // CSSs Globais
 import "./assets/css/reset.css";
+import { NotificacaoContextProvider } from "./contexts/NotificacaoContext";
 import Roteamento from "./routes";
 import * as serviceWorker from "./serviceWorker";
-import { NotificacaoContextProvider } from "./contexts/NotificacaoContext";
-import "./store";
+import store from "./store";
 
 ReactDOM.render(
-  <NotificacaoContextProvider>
-    <BrowserRouter>
-      <Roteamento />
-    </BrowserRouter>
-  </NotificacaoContextProvider>,
+  <Provider store={store}>
+    <NotificacaoContextProvider>
+      <BrowserRouter>
+        <Roteamento />
+      </BrowserRouter>
+    </NotificacaoContextProvider>
+  </Provider>,
   document.getElementById("root")
 );
 
